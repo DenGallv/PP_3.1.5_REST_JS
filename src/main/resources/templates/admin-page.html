@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+<body>
+<!--Навигационная панель-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="navbar-brand" id="userHeader"></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!--Сетка-->
+<div class="container-fluid">
+    <div class="row mt-3 vh-100">
+        <div class="col-md-2">
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link active" href="/admin/">Admin</a>
+                <a class="nav-link" href="/user/">User</a>
+            </nav>
+        </div>
+        <div class="col-10 bg-light ">
+            <h1>Admin panel</h1>
+
+            <!--Вкладки Users table и New User-->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+                <!--Вкладка Users table-->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                            type="button"
+                            role="tab" aria-controls="home" aria-selected="true">Users table
+                    </button>
+                </li>
+
+                <!--Вкладка New User-->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                            type="button"
+                            role="tab" aria-controls="profile" aria-selected="false">New User
+                    </button>
+                </li>
+            </ul>
+
+            <!--Содержимое вкладок Users table и New User-->
+            <div class="tab-content" id="myTabContent">
+
+                <!--            Содержимое вкладки Users table-->
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="card">
+                        <div class="card-header"><b>All users</b></div>
+                        <br>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Age</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <!--заполняем таблицу getAllUsers() -->
+                            <tbody id="userTable">
+
+                            <!-- Модальное окно Edit-->
+                            <div class="modal fade" id="editModal" tabindex="-1"
+                                 aria-labelledby="EditModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title fs-5" id="EditModalLabel">Edit user</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-8 col-md-offset-3 text-center">
+                                                        <form id="editForm" method="PATCH">
+                                                            <label><b>ID:</b>
+                                                                <input type="text" name="id2"
+                                                                       class="form-control"
+                                                                       id="id2" placeholder="ID"
+                                                                       disabled></label>
+
+                                                            <label><b>First name:</b>
+                                                                <input type="text" name="name2"
+                                                                       class="form-control"
+                                                                       id="name2" placeholder="First name"
+                                                                       required autofocus></label>
+
+                                                            <label><b>Last name:</b>
+                                                                <input type="text" name="surname2"
+                                                                       class="form-control"
+                                                                       id="surname2" placeholder="Last name"
+                                                                       required></label>
+
+                                                            <label><b>Age:</b>
+                                                                <input type="text" name="age2"
+                                                                       class="form-control"
+                                                                       id="age2" placeholder="Age"
+                                                                       required></label>
+
+                                                            <label><b>Email:</b>
+                                                                <input type="email" name="email2"
+                                                                       class="form-control"
+                                                                       id="email2" placeholder="Email" required></label>
+
+                                                            <label><b>Password:</b>
+                                                                <input type="text" name="password2"
+                                                                       class="form-control"
+                                                                       id="password2" placeholder="Password"
+                                                                       required></label>
+
+                                                            <label><b>Role:</b>
+                                                                <select id="roles2" name="role2" multiple
+                                                                        required
+                                                                        size="2" class="form-select"></select>
+                                                            </label>
+                                                            </br>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close
+                                                                </button>
+                                                                <button id="subButton2" type="submit"
+                                                                        class="btn btn-primary">Edit
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Модальное окно Delete-->
+                            <div class="modal fade" id="deleteModal" tabindex="-1"
+                                 aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title fs-5" id="DeleteModalLabel">Delete user</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                            </button>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-8 col-md-offset-3 text-center">
+                                                        <form id="deleteForm" method="DELETE">
+                                                            <label><b>ID:</b>
+                                                                <input type="text" name="id3"
+                                                                       class="form-control"
+                                                                       id="id3" placeholder="ID"
+                                                                       disabled></label>
+
+                                                            <label><b>First name:</b>
+                                                                <input type="text" name="name3"
+                                                                       class="form-control"
+                                                                       id="name3" placeholder="First name"
+                                                                       disabled></label>
+
+                                                            <label><b>Last name:</b>
+                                                                <input type="text" name="surname3"
+                                                                       class="form-control"
+                                                                       id="surname3" placeholder="Last name"
+                                                                       disabled></label>
+
+                                                            <label><b>Age:</b>
+                                                                <input type="text" name="age3"
+                                                                       class="form-control"
+                                                                       id="age3" placeholder="Age"
+                                                                       disabled></label>
+
+                                                            <label><b>Email:</b>
+                                                                <input type="email" name="email3"
+                                                                       class="form-control"
+                                                                       id="email3" placeholder="Email" disabled></label>
+
+                                                            <label><b>Password:</b>
+                                                                <input type="text" name="password3"
+                                                                       class="form-control"
+                                                                       id="password3" placeholder="Password"
+                                                                       disabled></label>
+
+                                                            <label><b>Role:</b>
+                                                                <select id="roles3" name="role" multiple
+                                                                        disabled
+                                                                        size="2" class="form-select"></select>
+                                                            </label>
+                                                            </br>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close
+                                                                </button>
+                                                                <button id="subButton3" type="submit"
+                                                                        class="btn btn-danger">Delete
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!--Содержимое вкладки New User-->
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="card">
+                        <div class="card-header"><b>Add new user</b></div>
+                        <br>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-3 col-md-offset-3 text-center">
+
+                                    <!--считываем форму createUser() -->
+
+                                    <form id="saveForm" method="POST">
+                                        <label><b>First name:</b>
+                                            <input type="text" name="name" class="form-control"
+                                                   id="name" placeholder="First name" required autofocus></label>
+
+                                        <label><b>Last name:</b>
+                                            <input type="text" name="surname" class="form-control"
+                                                   id="surname" placeholder="Last name" required></label>
+
+                                        <label><b>Age:</b>
+                                            <input type="text" name="age" class="form-control"
+                                                   id="age" placeholder="Age" required></label>
+
+                                        <label><b>Email:</b>
+                                            <input type="email" name="email" class="form-control"
+                                                   id="email" placeholder="Email" required></label>
+
+                                        <label><b>Password:</b>
+                                            <input type="text" name="password" class="form-control"
+                                                   id="password" placeholder="Password" required></label>
+
+                                        <label><b>Role:</b>
+
+                                            <!--заполняем select getAllRoles() -->
+
+                                            <select id="roles" name="role" multiple required
+                                                    size="2" class="form-select"></select>
+                                        </label>
+                                        </br>
+                                        <button id="subButton" type="submit" class="btn btn-success">Add new user
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    const table = document.querySelector('#userTable');
+    const navbar = document.querySelector('#userHeader');
+
+    //-----------------------------------------------------------------------------------
+    async function getAllUsers() {
+        table.innerHTML = 'loading...'
+        try {
+            const response = await fetch('http://localhost:8080/api/admin/users/');
+            const usersList = await response.json()
+            console.log(usersList)
+            let temp = '';
+            for (let i = 0; i < usersList.length; i++) {
+                temp += `<tr>
+      <td>${usersList[i].id}</td>
+      <td>${usersList[i].name}</td>
+      <td>${usersList[i].surname}</td>
+      <td>${usersList[i].age}</td>
+      <td>${usersList[i].email}</td>
+      <td>${usersList[i].password}</td>
+      <td>${usersList[i].roles.map((role) => role.name)}</td>
+      <td><button class="btn btn-primary" onclick="editUser(${usersList[i].id})">
+      Edit</button></td>
+        <td><button class="btn btn-danger" onclick="deleteUser(${usersList[i].id})">
+        Delete</button></td>
+      </tr>`;
+            }
+            table.innerHTML = temp;
+        } catch (ex) {
+            table.innerHTML = ex.message
+        }
+    }
+
+    //-----------------------------------------------------------------------------------
+    getAllUsers()
+
+    async function getAuthUser() {
+        try {
+            const response = await fetch('http://localhost:8080/api/user/');
+            const user = await response.json()
+
+            navbar.innerHTML = `${user.email} with roles: ${user.roles.map((role) => " " + role.name)}`
+        } catch (ex) {
+            navbar.innerHTML = ex.message
+        }
+    }
+
+    getAuthUser()
+
+    //-----------------------------------------------------------------------------------
+    async function getAllRoles() {
+        try {
+            const response = await fetch('http://localhost:8080/api/admin/roles');
+            const roles = await response.json();
+
+            let uniqRolesSet = new Set();
+            roles.forEach((role) => {
+                uniqRolesSet.add(role.name);
+            });
+
+            const rolesSelect = document.getElementById('roles');
+            const rolesSelect2 = document.getElementById('roles2');
+            const rolesSelect3 = document.getElementById('roles3');
+
+            let uniqRolesArr = Array.from(uniqRolesSet);
+
+            uniqRolesArr.forEach((roleName) => {
+                const option = document.createElement('option');
+                option.value = roleName;
+                option.text = roleName;
+                rolesSelect.appendChild(option);
+            });
+            uniqRolesArr.forEach((roleName) => {
+                const option = document.createElement('option');
+                option.value = roleName;
+                option.text = roleName;
+                rolesSelect2.appendChild(option);
+            });
+            uniqRolesArr.forEach((roleName) => {
+                const option = document.createElement('option');
+                option.value = roleName;
+                option.text = roleName;
+                rolesSelect3.appendChild(option);
+            });
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    getAllRoles();
+
+    //-----------------------------------------------------------------------------------
+    async function createUser() {
+        try {
+            let firstName = document.getElementById('name').value;
+            let lastName = document.getElementById('surname').value;
+            let age = document.getElementById('age').value;
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            let rolesSelect = document.getElementById('roles');
+            let selectedRoles = Array.from(rolesSelect.selectedOptions, option => option.value);
+
+            const response = await fetch('/api/admin/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify({
+                    'name': firstName,
+                    'surname': lastName,
+                    'age': age,
+                    'email': email,
+                    'password': password,
+                    'roles': selectedRoles
+                })
+            });
+
+            if (response.ok) {
+                document.getElementById('home-tab').click();
+                await getAllUsers();
+                document.getElementById('saveForm').reset();
+            } else {
+                console.error('Ошибка при отправке запроса');
+            }
+        } catch (error) {
+            console.error('Произошла ошибка:', error);
+        }
+    }
+
+    document.getElementById('saveForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        createUser();
+    });
+
+    //-----------------------------------------------------------------------------------
+    let editModal;
+
+    async function editUser(userId) {
+        try {
+            editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.show();
+
+            const response = await fetch('http://localhost:8080/api/admin/users/' + userId);
+            const user = await response.json();
+
+            document.getElementById('id2').value = userId;
+            document.getElementById('name2').value = user.name;
+            document.getElementById('surname2').value = user.surname;
+            document.getElementById('age2').value = user.age;
+            document.getElementById('email2').value = user.email;
+            document.getElementById('password2').value = user.password;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    document.getElementById('editForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        let userId = document.getElementById('id2').value;
+        let name = document.getElementById('name2').value;
+        let surname = document.getElementById('surname2').value;
+        let age = document.getElementById('age2').value;
+        let email = document.getElementById('email2').value;
+        let password = document.getElementById('password2').value;
+        let roles = document.getElementById('roles2');
+        let selectedRoles = Array.from(roles.selectedOptions, option => option.value);
+
+        try {
+            const response = await fetch('http://localhost:8080/api/admin/users/', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: userId,
+                    name: name,
+                    surname: surname,
+                    age: age,
+                    email: email,
+                    password: password,
+                    roles: selectedRoles
+                })
+            });
+
+            const data = await response.json();
+            console.log(data);
+            editModal.hide();
+            await getAllUsers()
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    //-----------------------------------------------------------------------------------
+    let deleteModal;
+
+    async function deleteUser(userId) {
+        try {
+            deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+
+            const response = await fetch('http://localhost:8080/api/admin/users/' + userId);
+            const user = await response.json();
+
+            document.getElementById('id3').value = userId;
+            document.getElementById('name3').value = user.name;
+            document.getElementById('surname3').value = user.surname;
+            document.getElementById('age3').value = user.age;
+            document.getElementById('email3').value = user.email;
+            document.getElementById('password3').value = user.password;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    document.getElementById('deleteForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        let userId = document.getElementById('id3').value;
+
+        try {
+            const response = await fetch('http://localhost:8080/api/admin/users/' + userId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: userId
+                })
+            });
+
+            const data = await response.json();
+            console.log(data);
+            deleteModal.hide();
+            await getAllUsers()
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
+        integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
+        integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
+        crossorigin="anonymous"></script>
+</body>
+</html>
