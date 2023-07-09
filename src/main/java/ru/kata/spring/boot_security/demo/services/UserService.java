@@ -103,6 +103,10 @@ public class UserService implements UserDetailsService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+    @Transactional
+    public void initSaveUser(User user){
+        userRepository.save(user);
+    }
 
     // RoleRepository methods
     public List<Role> getAllRoles() {
@@ -117,6 +121,11 @@ public class UserService implements UserDetailsService {
         List<Role> roleList = new ArrayList<>();
         Arrays.stream(roles).forEach(role -> roleList.add(getRoleByName(role)));
         return roleList;
+    }
+
+    @Transactional
+    public void saveRole(Role role){
+        roleRepository.save(role);
     }
 
     // DTO method

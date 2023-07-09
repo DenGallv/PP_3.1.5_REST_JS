@@ -58,17 +58,17 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     @Column(name = "created_who")
-    @NotEmpty
     private String createdWho;
 
     public User() {
     }
 
-    public User(String name, String surname, String age, String email) {
+    public User(String name, String surname, String age, String email, String password) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
